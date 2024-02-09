@@ -19,7 +19,7 @@ public class AnnonceController {
     @GetMapping("/{a}/{b}")
     public ApiResponse getAllAnnonce(@PathVariable("a") String a,
                                      @PathVariable("b") String b) {
-        return annonceService.obetnirAnnonces(a, b, 20+"");
+        return annonceService.obetnirAnnonces(a, b, 10+"");
     }
     @GetMapping
     public ApiResponse getData(@RequestHeader("Authorization") String token) throws AccessDeniedException {

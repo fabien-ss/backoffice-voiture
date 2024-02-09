@@ -24,8 +24,8 @@ public interface AnnonceRepository extends JpaRepository<Annonce, String> {
     Annonce findAnnonceByIdAnnonce(String idAnnonce);
     @Query(value = "with part1 as " +
             "(select * from annonce  order by id_annonce limit cast(:a as BIGINT) offset cast(:b as BIGINT)) " +
-            "select * from part1 limit cast(:a as BIGINT)- cast(:b as Bigint)", nativeQuery = true)
-    List<Annonce> findAnnonceBetween(@Param("a") String a, @Param("b") String b);
+            "select * from part1 where part1.etat = :etat limit cast(:a as BIGINT)- cast(:b as Bigint) ", nativeQuery = true)
+    List<Annonce> findAnnonceBetween(@Param("a") String a, @Param("b") String b, @Param("etat") String etat);
 
     @Query(value = " :sql ", nativeQuery = true)
     List<Annonce> executeListAnnonceSql(@Param(value = "sql") String sql);
@@ -34,7 +34,7 @@ public interface AnnonceRepository extends JpaRepository<Annonce, String> {
     List<Annonce> findAnnoncesBySearchParameters(@Param("sqlValues") String sqlValues, @Param("prixInf") Integer prixInf, @Param("prixSup") Integer prixSup, @Param("anneeInf") Integer anneeInf, @Param("anneeSup") Integer anneeSup);
 
     @Query(value = "with part1 as (select count(id_modele) as nombre, cast(id_modele as varchar) from axe_possible_values where id_value in " +
-            "                                  ('4','7','9','11','13','17')" +
+            "                                  (:sql)" +
             "    group by id_modele order by nombre desc)" +
             "   select distinct a.* from details_modele dm join part1 on part1.id_modele=dm.id_modele" +
             "   join annonce a on dm.id_annonce = a.id_annonce ", nativeQuery = true)

@@ -82,7 +82,7 @@ public class AnnonceService {
     public ApiResponse obetnirAnnonces(String a, String b, String etat){
         ApiResponse apiResponse = new ApiResponse();
         try {
-            List<Annonce> annonces = annonceRepository.findAnnonceBetween(a, b);
+            List<Annonce> annonces = annonceRepository.findAnnonceBetween(a, b, etat);
             for (Annonce annonce: annonces){
                 annonce.setOwnerId(annonce.getUtilisateur().getIdUtilisateur());
                 for (DetailsModele detailsModele : annonce.getAnnonceDetailsModeles()){
